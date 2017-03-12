@@ -5,10 +5,11 @@ Value Object
 :Info: DDD Value Objects implementation.
 :Author: Paweł Zadrożny <pawel.zny@gmail.com>
 
-Installation:
-=============
+Installation
+============
 
 .. code:: bash
+
     pip install vo
 
 
@@ -19,6 +20,7 @@ Example
 =======
 
 .. code:: python
+
     from vo.Value import Value
 
     value1 = Value(test=True, some_text="I am some text string")
