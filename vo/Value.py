@@ -1,114 +1,58 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import hashlib
+from collections import Hashable
+from copy import copy
+
+__author__ = 'Paweł Zadrożny'
+__copyright__ = 'Copyright (c) 2017, pawelzny'
+
+
+class ValueModificationForbidden(Exception):
+    def __init__(self, message: str = None):
+        message = message or "Modification of existing Value is forbidden."
+        super().__init__(message)
 
 
 class Value:
     """
-    Basic implementation of DDD Value Object. These objects
-    are meant to holds data only without any business logic.
-    When data has no identifier so it is not an Entity,
-    there comes Value Objects.
-    
-    Value Objects are consider same if they holds the same
-    data even if allocated in different parts of memory.
-    
-    :Example:
-    
-    import vo
-    
-    value1 = vo.Value(name="test value", test=True)
-    value2 = vo.Value(test=True, name="test value")
-    assert(value1 == value2)  # True
-    
-    value1.set(extra="extra data")
-    assert(value1 == value2)  # False
+    Basic implementation of DDD invariant Value Object.
+    Value objects are consider same if they holds the same values.
     """
 
-    @staticmethod
-    def to_bytes(string):
-        """
-        Converts string to byte string
-        :param 
-            string (str): String or number to convert
-        :return
-            (str): Byte string
-        """
+    checksum = None
 
+    @staticmethod
+    def to_bytes(string: str) -> bytes:
         return bytes(repr(string), 'utf-8')
 
+    # noinspection PyPep8Naming
     def __init__(self, **kwargs):
-        """
-        Dynamically add all kwargs to self dictionary.
-        :param 
-            kwargs: Key-value pairs 
-        """
-
-        self.set(**kwargs)
-
-    def __eq__(self, other):
-        """
-        Predicate if checksum of Value Objects are the same.
-        :param 
-            other: ValueObject
-        :return
-            (bool): Boolean
-        """
-
-        return self.checksum() == other.checksum()
-
-    def __ne__(self, other):
-        """
-        Predicate if checksum of Value Objects are different.
-        :param 
-            other: ValueObject
-        :return
-            (bool): Boolean 
-        """
-
-        return self.checksum() != other.checksum()
-
-    def __hash__(self):
-        """
-        Returns hash of checksum
-        :return 
-            (int): Integer representing object Hash
-        """
-
-        return hash(self.checksum())
-
-    def set(self, **kwargs):
-        """
-        Set additional attributes from kwargs
-        :param 
-            kwargs: 
-        :return 
-            (self): Returns self to allow method chaining.
-        """
-
         self.__dict__.update(kwargs)
-
-        return self
-
-    def get(self, name, default=None):
-        """
-        Gets attribute value or default if not exists.
-        :param 
-            name (str): Attribute name
-            default (any): Default value
-        :return
-            (any): Existing attribute value or default
-        """
-
-        return getattr(self, name, default)
-
-    def checksum(self):
-        """
-        Computes and returns sha224 string from self dict items.
-        :return
-            (str): SHA224 string representing checksum of object values.
-        """
-
-        ck_sum = Value.to_bytes('checksum:')
+        ck_sum = self.to_bytes('checksum:')
         for key, value in sorted(self.__dict__.items()):
-            ck_sum += Value.to_bytes(str(key) + str(value))
+            ck_sum += self.to_bytes(str(key) + str(value))
+        self.__dict__['checksum'] = hashlib.sha224(ck_sum).hexdigest()
 
-        return hashlib.sha224(ck_sum).hexdigest()
+    def __eq__(self, other: "Value") -> bool:
+        return self.checksum == other.checksum
+
+    def __ne__(self, other: "Value") -> bool:
+        return self.checksum != other.checksum
+
+    def __hash__(self) -> hash:
+        return hash(self.checksum)
+
+    def __contains__(self, item: Hashable):
+        return item in self.__dict__
+
+    def __setattr__(self, name, value):
+        raise ValueModificationForbidden()
+
+    def is_empty(self) -> bool:
+        return len(self.__dict__) == 1
+
+    def to_dict(self) -> dict:
+        dct = copy(self.__dict__)
+        del dct['checksum']
+        return dct
