@@ -1,0 +1,24 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[packages]
+
+nose = "==1.3.7"
+coverage = "==4.3.4"
+
+
+[dev-packages]
+
+pytest = "*"
+coverage = "*"
+bumpversion = "*"
+"flake8" = "*"
+codecov = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+tox-pyenv = "*"
+tox = "*"
