@@ -16,7 +16,7 @@ jobs:
       - checkout
       - restore_cache:
           keys:
-          - v1-dependencies-{{ checksum "PipFile.lock" }}
+          - v1-dependencies-{{ checksum "Pipfile.lock" }}
           - v1-dependencies-
       - run:
           name: install dependencies
@@ -26,7 +26,7 @@ jobs:
       - save_cache:
           paths:
             - ./repo
-          key: v1-dependencies-{{ checksum "PipFile.lock" }}
+          key: v1-dependencies-{{ checksum "Pipfile.lock" }}
       - run:
           name: run tests
           command: make test-all
