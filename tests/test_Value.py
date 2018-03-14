@@ -1,6 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import unittest
 
 from vo import Value, ValueModificationForbidden
+
+__author__ = 'Paweł Zadrożny'
+__copyright__ = 'Copyright (c) 2017, Pawelzny'
 
 
 class ValueTest(unittest.TestCase):
@@ -8,7 +13,8 @@ class ValueTest(unittest.TestCase):
         value = Value(test=True, text='Some text')
 
         self.assertTrue(value.test)
-        self.assertEqual('Some text', value.text)
+        self.assertEqual(value.text, 'Some text')
+        self.assertEqual(value['text'], 'Some text')
 
     def test_equal(self):
         v1 = Value(text='first text', other_attr=1243)
@@ -39,7 +45,10 @@ class ValueTest(unittest.TestCase):
     def test_modification_forbidden(self):
         v = Value(text='first text', other_attr=1243, new_attr=True)
         with self.assertRaises(ValueModificationForbidden):
-            v.something_new = "forbidden"
+            v.something_new = 'forbidden'
+
+        with self.assertRaises(ValueModificationForbidden):
+            v['something_other'] = 'also forbidden'
 
     def test_value_contains_key(self):
         v = Value(text='first text', other_attr=1243, new_attr=True)
