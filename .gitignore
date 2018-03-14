@@ -142,3 +142,4 @@ fabric.properties
 
 ## Custom
 /.idea/
+/.pytest_cache/

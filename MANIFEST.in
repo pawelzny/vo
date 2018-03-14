@@ -1,0 +1,14 @@
+include AUTHORS.rst
+include CONTRIBUTING.rst
+include LICENSE
+include README.rst
+
+include PipFile
+include PipFile.lock
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
+
+recursive-include tests *
+recursive-include vo *
+recursive-include docs *.rst conf.py Makefile *.jpg *.png *.gif
