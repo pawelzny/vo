@@ -32,13 +32,12 @@ test-all: ## run tests on every Python version with tox
 	pipenv run tox --skip-missing-interpreters
 
 coverage: ## check code coverage quickly with the default Python
-	coverage run --source vo -m pytest
-	coverage report -m
-	coverage html
+	rm -rf htmlcov
+	pipenv run coverage run --source vo -m pytest
+	pipenv run coverage report -m
+	pipenv run coverage html
 
 docs: ## generate Sphinx HTML documentation, including API docs
-	rm -rf docs/_build
-	pipenv run sphinx-apidoc -o docs/ docs/_build
 	pipenv run $(MAKE) -C docs clean
 	pipenv run $(MAKE) -C docs html
 

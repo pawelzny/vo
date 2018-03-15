@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+import json
 import unittest
 
-from vo import Value, ValueModificationForbidden
+from vo import Value, ImmutableInstanceError
 
 __author__ = 'Paweł Zadrożny'
 __copyright__ = 'Copyright (c) 2017, Pawelzny'
@@ -35,20 +36,36 @@ class ValueTest(unittest.TestCase):
         dump = v.to_dict()
         self.assertDictEqual(dump, {'text': 'first text', 'other_attr': 1243})
 
-    def test_is_empty(self):
-        v1 = Value(text='first text', other_attr=1243, new_attr=True)
-        v2 = Value()
+    def test_to_json(self):
+        v = Value(text='first text', other_attr=1243)
+        dump = v.to_json()
+        self.assertIsInstance(dump, str)
 
-        self.assertFalse(v1.is_empty())
-        self.assertTrue(v2.is_empty())
+        load = json.loads(dump)
+        self.assertDictEqual(load, {'text': 'first text', 'other_attr': 1243})
+
+    def test_to_bytes(self):
+        v = Value(text='first text', other_attr=1243)
+        dump = v.to_bytes()
+
+        self.assertIsInstance(dump, bytes)
+        self.assertEqual(dump, b'\'{"other_attr": 1243, "text": "first text"}\'')
 
     def test_modification_forbidden(self):
         v = Value(text='first text', other_attr=1243, new_attr=True)
-        with self.assertRaises(ValueModificationForbidden):
+        with self.assertRaises(ImmutableInstanceError):
             v.something_new = 'forbidden'
 
-        with self.assertRaises(ValueModificationForbidden):
+        with self.assertRaises(ImmutableInstanceError):
             v['something_other'] = 'also forbidden'
+
+    def test_delete_forbidden(self):
+        v = Value(text='first text', other_attr=1243, new_attr=True)
+        with self.assertRaises(ImmutableInstanceError):
+            del v.text
+
+        with self.assertRaises(ImmutableInstanceError):
+            del v['other_attr']
 
     def test_value_contains_key(self):
         v = Value(text='first text', other_attr=1243, new_attr=True)

@@ -1,8 +1,8 @@
-============
+************
 Value Object
-============
+************
 
-:Info: DDD Value Objects implementation.
+:Info: DDD Value Object implementation.
 :Author: Paweł Zadrożny @pawelzny <pawel.zny@gmail.com>
 
 
@@ -26,8 +26,8 @@ Installation
 **Package**: https://pypi.python.org/pypi/vo
 
 
-Example
-=======
+Quick Example
+=============
 
 .. code:: python
 
