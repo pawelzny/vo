@@ -54,6 +54,9 @@ class ValueTest(unittest.TestCase):
     def test_modification_forbidden(self):
         v = Value(text='first text', other_attr=1243, new_attr=True)
         with self.assertRaises(ImmutableInstanceError):
+            v.text = 'forbidden'
+
+        with self.assertRaises(ImmutableInstanceError):
             v.something_new = 'forbidden'
 
         with self.assertRaises(ImmutableInstanceError):

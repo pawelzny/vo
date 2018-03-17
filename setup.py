@@ -18,10 +18,6 @@ base_dir = pathlib.Path(__file__).parent
 with open('README.rst', 'r') as readme_file:
     readme = readme_file.read()
 
-with open('LICENSE', 'r') as license_file:
-    # noinspection PyShadowingBuiltins
-    license = license_file.read()
-
 
 def get_version(*file_paths):
     """Retrieves the version from project/__init__.py"""
@@ -59,7 +55,7 @@ setup(
     author='Paweł Zadrożny @pawelzny',
     author_email='pawel.zny@gmail.com',
     url='https://github.com/pawelzny/vo',
-    license=license,
+    license='ISC (ISCL)',
     packages=find_packages(exclude=('tests', 'docs', 'bin')),
     package_dir={'vo': 'vo'},
     include_package_data=True,
@@ -67,11 +63,16 @@ setup(
     install_requires=['setuptools_scm'],
     zip_safe=False,
     classifiers=[
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Developers',
         'Natural Language :: English',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3 :: Only',
         'License :: OSI Approved :: ISC License (ISCL)',
+        'Topic :: Software Development',
+        'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     cmdclass={
         'develop': PostDevelopCommand,

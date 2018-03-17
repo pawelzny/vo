@@ -25,7 +25,6 @@ Once created values are immutable. Can't be changed or deleted.
    >>> book = Value(title='Learning Python',
    ...              authors=['Mark Lutz', 'David Ascher'],
    ...              publisher="O'REILLY")
-   ...
    >>> book
    <vo.value.Value object at 0x7f38862b3860>
 
@@ -41,7 +40,6 @@ Values can be accessed like object attributes or like dict keys.
    >>> book = Value(title='Learning Python',
    ...              authors=['Mark Lutz', 'David Ascher'],
    ...              publisher="O'REILLY")
-   ...
    >>> book.title == book['title']
    True
 
@@ -61,11 +59,9 @@ Let's take the same book example.
    >>> book1 = Value(title='Learning Python',
    ...               authors=['Mark Lutz', 'David Ascher'],
    ...               publisher="O'REILLY")
-   ...
    >>> book2 = Value(title='Learning Python',
    ...               authors=['Mark Lutz', 'David Ascher'],
    ...               publisher="O'REILLY")
-   ...
    >>> book1 == book2
    True
 
@@ -84,7 +80,6 @@ Check if value exists.
    >>> book = Value(title='Learning Python',
    ...              authors=['Mark Lutz', 'David Ascher'],
    ...              publisher="O'REILLY")
-   ...
    >>> 'title' in book
    True
 
@@ -100,12 +95,12 @@ Check if value exists.
    AttributeError: 'Value' object has no attribute 'price'
 
 
-***************************
-Instance of Immutable Error
-***************************
+****************************
+Modification forbidden error
+****************************
 
 .. py:module:: vo.value
-.. autoclass:: ImmutableInstanceError
+.. autoexception:: ImmutableInstanceError
    :members:
    :undoc-members:
 
@@ -118,9 +113,7 @@ Any attempt of value modification or delete will raise `ImmutableInstanceError`
    >>> book = Value(title='Learning Python',
    ...              authors=['Mark Lutz', 'David Ascher'],
    ...              publisher="O'REILLY")
-   ...
    >>> book.title = 'Spam'
-
    Traceback (most recent call last):
      File "<input>", line 1, in <module>
        raise ImmutableInstanceError()

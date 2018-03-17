@@ -12,7 +12,7 @@ __copyright__ = 'Copyright (c) 2017, Pawelzny'
 class ImmutableInstanceError(Exception):
     """Raised on any attempt to modify values in Value object."""
 
-    message = 'Modification of Value frozen instance is forbidden.'
+    message = 'Modification of Value instance is forbidden.'
 
     def __init__(self, message: str = None):
         super().__init__(message or self.message)
@@ -56,16 +56,16 @@ class Value:
         return self.__dict__[item]
 
     def __setattr__(self, name, value):
-        raise ImmutableInstanceError()
+        raise ImmutableInstanceError
 
     def __setitem__(self, key, value):
-        raise ImmutableInstanceError()
+        raise ImmutableInstanceError
 
     def __delattr__(self, item):
-        raise ImmutableInstanceError()
+        raise ImmutableInstanceError
 
     def __delitem__(self, key):
-        raise ImmutableInstanceError()
+        raise ImmutableInstanceError
 
     def to_dict(self) -> dict:
         """Dump values to dict.

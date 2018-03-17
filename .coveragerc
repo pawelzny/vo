@@ -1,0 +1,25 @@
+[run]
+branch = true
+data_file = .coverage
+
+[report]
+omit =
+    */site-packages/*
+    */.virtualenvs/*
+    */tests/*
+    */.tox/*
+    */.idea/*
+    */docs/*
+    setup.py
+show_missing = True
+exclude_lines =
+    raise NotImplementedError
+    def __repr__
+    def __str__
+    raise AssertionError
+    raise NotImplementedError
+    raise NotImplemented
+ignore_errors = True
+
+[html]
+directory = htmlcov
