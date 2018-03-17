@@ -23,8 +23,8 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Value Object'
-copyright = '2018, Paweł Zadrożny'
-author = 'Paweł Zadrożny'
+copyright = u'2018, Paweł Zadrożny'
+author = u'Paweł Zadrożny'
 
 # The short X.Y version
 version = __version__
@@ -138,7 +138,7 @@ latex_elements = {
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
     (master_doc, 'ValueObject.tex', 'Value Object Documentation',
-     'Paweł Zadrożny', 'manual'),
+     u'Paweł Zadrożny', 'manual'),
 ]
 
 
