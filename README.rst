@@ -29,6 +29,10 @@ Value Object
    :target: https://pypi.org/project/vo/
    :alt: Supported python versions
 
+.. image:: https://img.shields.io/pypi/implementation/vo.svg
+   :target: https://pypi.org/project/vo/
+   :alt: Supported interpreters
+
 .. image:: https://img.shields.io/pypi/l/vo.svg
    :target: https://github.com/pawelzny/vo/blob/master/LICENSE
    :alt: License
