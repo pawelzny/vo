@@ -10,7 +10,7 @@ install: ## install dependencies
 install-dev: install ## install dev dependencies
 	pipenv install --dev
 
-clean: clean-build clean-pyc
+clean: clean-build clean-pyc clean-cache
 
 clean-build: ## remove build artifacts
 	rm -fr build/
@@ -22,8 +22,12 @@ clean-pyc: ## remove Python file artifacts
 	find . -name '*.pyo' -exec rm -f {} +
 	find . -name '*~' -exec rm -f {} +
 
+clean-cache: ## remove .cache and .pytest_cache
+	rm -rf .cache
+	rm -rf .pytest_cache
+
 lint: ## check style with flake8
-	pipenv run flake8 vo tests
+	pipenv run flake8
 
 test: ## run tests quickly with the default Python
 	pipenv run pytest
@@ -33,7 +37,8 @@ test-all: ## run tests on every Python version with tox
 
 coverage: ## check code coverage quickly with the default Python
 	rm -rf htmlcov
-	pipenv run coverage run --source vo -m pytest
+	pipenv run coverage erase
+	pipenv run coverage run -m pytest
 	pipenv run coverage report -m
 	pipenv run coverage html
 
@@ -41,10 +46,10 @@ docs: ## generate Sphinx HTML documentation, including API docs
 	pipenv run $(MAKE) -C docs clean
 	pipenv run $(MAKE) -C docs html
 
-release: clean ## package and upload a release
-	pipenv run python setup.py sdist upload
-	pipenv run python setup.py bdist_wheel upload
+release: sdist ## package and upload a release
+	twine upload dist/*
 
 sdist: clean ## package
 	pipenv run python setup.py sdist
+	gpg --detach-sign -a dist/*.tar.gz
 	ls -l dist

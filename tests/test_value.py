@@ -76,3 +76,7 @@ class ValueTest(unittest.TestCase):
         self.assertIn('other_attr', v)
         self.assertIn('new_attr', v)
         self.assertNotIn('forbidden', v)
+
+    def test_repr(self):
+        v = Value(first='first', second=2, is_true=True)
+        self.assertEqual(repr(v), "Value(first='first', is_true=True, second=2)")

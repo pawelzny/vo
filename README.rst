@@ -65,22 +65,24 @@ Quick Example
 .. code:: python
 
    >>> from vo import Value
-   >>> value = Value(test=True, some_text="I am some text string")
-   >>> value == value
-   True
+   ...
+   >>> class Book(Value):
+   ...     price = None
+   ...     title = None
+   ...     publisher = None
+   ...
+   >>> book = Book(price=120, title='Python for masses', publisher='SPAM')
+   >>> book
+   Book(price=120, title='Python for masses', publisher='SPAM')
 
-   >>> value_clone = Value(some_text="I am some text string", test=True)
-   >>> value == value_clone
-   True
+   >>> book.title
+   'Python for masses'
 
-   >>> value is value_clone
-   False
+   >>> book['price']
+   120
 
-   >>> value_truth = Value(purpose_of_life=42)
-   >>> value == value_truth
-   False
-
-   >>> value_truth.purpose_of_life
-   42
-   >>> value_truth['purpose_of_life']
-   42
+   >>> book.price = 230
+   Traceback (most recent call last):
+     File "<input>", line 1, in <module>
+       raise ImmutableInstanceError
+   vo.value.ImmutableInstanceError: Modification of Value instance is forbidden.

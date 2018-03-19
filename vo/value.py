@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import hashlib
 import json
-from collections import Hashable
+from collections import Hashable, OrderedDict
 from copy import deepcopy
 
 __author__ = 'Paweł Zadrożny'
@@ -10,7 +10,11 @@ __copyright__ = 'Copyright (c) 2017, Pawelzny'
 
 
 class ImmutableInstanceError(Exception):
-    """Raised on any attempt to modify values in Value object."""
+    """Raised on any attempt to modify values in Value object.
+
+    :param message: Optional message.
+    :type message: str
+    """
 
     message = 'Modification of Value instance is forbidden.'
 
@@ -25,7 +29,23 @@ def str_to_bytes(string: str) -> bytes:
 class Value:
     """Basic implementation of DDD immutable Value Object.
 
-    Value objects are consider same if they holds the same values.
+    **Features:**
+
+        * Two objects with exact values are considered the same
+        * Objects are immutable (raise ImmutableInstanceError)
+
+    :Example:
+
+    .. code-block:: python
+
+        >>> val = Value(name='Primary', price=10.35, currency='USD')
+        >>> val.price
+        10.35
+
+        >>> val['currency']
+        'USD'
+
+    :param **kwargs: Any key=value pairs.
     """
 
     __checksum = None
@@ -39,6 +59,15 @@ class Value:
 
         cks_tpl = self.__checksum_tpl.format(self.__class__.__name__)
         object.__setattr__(self, cks_tpl, hashlib.sha224(ck_sum).hexdigest())
+
+    def __repr__(self):
+        cks_tpl = self.__checksum_tpl.format(self.__class__.__name__)
+        values = ", ".join('{}={}'.format(key, repr(val))
+                           for key, val in self.to_dict().items() if key != cks_tpl)
+        return '{cls}({val})'.format(cls=self.__class__.__name__, val=values)
+
+    def __str__(self):
+        return '{} Value'.format(self.__class__.__name__)
 
     def __eq__(self, other: "Value") -> bool:
         return self.__checksum == other.__checksum
@@ -71,8 +100,9 @@ class Value:
         """Dump values to dict.
 
         :return: dict with values
+        :rtype: dict
         """
-        dct = deepcopy(self.__dict__)
+        dct = OrderedDict(sorted(deepcopy(self.__dict__).items()))
         del dct[self.__checksum_tpl.format(self.__class__.__name__)]
         return dct
 
@@ -80,6 +110,7 @@ class Value:
         """Dump values to JSON.
 
         :return: JSON string.
+        :rtype: str
         """
         return json.dumps(self.to_dict())
 
@@ -87,5 +118,6 @@ class Value:
         """Convert values to bytes.
 
         :return: byte string
+        :rtype: bytes
         """
         return str_to_bytes(self.to_json())

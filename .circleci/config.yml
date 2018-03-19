@@ -1,17 +1,11 @@
 # Python CircleCI 2.0 configuration file
-#
 # Check https://circleci.com/docs/2.0/language-python/ for more details
-#
 version: 2
 jobs:
-  build:
+  py34:
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
-      - image: circleci/python:3.6.4
-
+      - image: circleci/python:3.4.8
     working_directory: ~/repo
-
     steps:
       - checkout
       - restore_cache:
@@ -22,14 +16,113 @@ jobs:
           name: install dependencies
           command: |
             pip install pipenv
-            make install-dev
+            pipenv install --three
+            pipenv install --three --dev
       - save_cache:
           paths:
             - ./repo
           key: v1-dependencies-{{ checksum "Pipfile.lock" }}
       - run:
           name: run tests
-          command: make test-all
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          command: pipenv run pytest
+  py35:
+    docker:
+      - image: circleci/python:3.5.5
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Pipfile.lock" }}
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            pip install pipenv
+            pipenv install --three
+            pipenv install --three --dev
+      - save_cache:
+          paths:
+            - ./repo
+          key: v1-dependencies-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: run tests
+          command: pipenv run pytest
+  py36:
+    docker:
+      - image: circleci/python:3.6.4
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Pipfile.lock" }}
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            pip install pipenv
+            pipenv install --three
+            pipenv install --three --dev
+      - save_cache:
+          paths:
+            - ./repo
+          key: v1-dependencies-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: run tests
+          command: pipenv run pytest
+  pypy35:
+    docker:
+      - image: pypy:3-5.10
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Pipfile.lock" }}
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            pip install pipenv
+            pipenv install --python `which pypy3`
+            pipenv install --python `which pypy3` --dev
+      - save_cache:
+          paths:
+            - ./repo
+          key: v1-dependencies-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: run tests
+          command: pipenv run pytest
+  flake8:
+    docker:
+      - image: circleci/python:3.6.4
+    working_directory: ~/repo
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+          - v1-dependencies-{{ checksum "Pipfile.lock" }}
+          - v1-dependencies-
+      - run:
+          name: install dependencies
+          command: |
+            pip install pipenv
+            pipenv install --three
+            pipenv install --three --dev
+      - save_cache:
+          paths:
+            - ./repo
+          key: v1-dependencies-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: run tests
+          command: pipenv run flake8 vo tests
+workflows:
+  version: 2
+  test_all:
+    jobs:
+      - py34
+      - py35
+      - py36
+      - pypy35
+      - flake8
