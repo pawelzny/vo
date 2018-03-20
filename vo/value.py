@@ -29,23 +29,13 @@ def str_to_bytes(string: str) -> bytes:
 class Value:
     """Basic implementation of DDD immutable Value Object.
 
-    **Features:**
+    Implementation provides:
 
-        * Two objects with exact values are considered the same
-        * Objects are immutable (raise ImmutableInstanceError)
+    * Immutability of once created object
+    * Comparison of two objects
+    * Conversion to other data types
 
-    :Example:
-
-    .. code-block:: python
-
-        >>> val = Value(name='Primary', price=10.35, currency='USD')
-        >>> val.price
-        10.35
-
-        >>> val['currency']
-        'USD'
-
-    :param **kwargs: Any key=value pairs.
+    :param: Any ``key=value`` pairs.
     """
 
     __checksum = None
@@ -96,11 +86,14 @@ class Value:
     def __delitem__(self, key):
         raise ImmutableInstanceError
 
-    def to_dict(self) -> dict:
-        """Dump values to dict.
+    def to_dict(self) -> OrderedDict:
+        """Dump all values to OrderedDict.
+
+        All keys are sorted in ascending direction.
+        Dump does not include hash and checksum.
 
         :return: dict with values
-        :rtype: dict
+        :rtype: collections.OrderedDict
         """
         dct = OrderedDict(sorted(deepcopy(self.__dict__).items()))
         del dct[self.__checksum_tpl.format(self.__class__.__name__)]
@@ -109,13 +102,17 @@ class Value:
     def to_json(self) -> str:
         """Dump values to JSON.
 
+        Feed for JSON comes from ``.to_dict()`` method.
+
         :return: JSON string.
         :rtype: str
         """
         return json.dumps(self.to_dict())
 
     def to_bytes(self) -> bytes:
-        """Convert values to bytes.
+        """Dump values to bytes.
+
+        Feed for byte string comes from ``.to_json()`` method.
 
         :return: byte string
         :rtype: bytes

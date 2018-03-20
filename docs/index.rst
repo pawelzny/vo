@@ -16,6 +16,7 @@ but shares some similarities like frozen attributes.
    :caption: Contents:
 
    vo
+   examples
    api
    authors
    contributing

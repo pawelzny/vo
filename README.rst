@@ -66,27 +66,94 @@ Read full documentation on: http://vo.readthedocs.io
 Quick Example
 =============
 
-.. code:: python
+Value accept any key=value pairs. These pairs will be attached to object as attributes.
+Once created values are immutable. Can't be changed or deleted.
+
+.. code-block:: python
 
    >>> from vo import Value
-   ...
-   >>> class Book(Value):
-   ...     price = None
-   ...     title = None
-   ...     publisher = None
-   ...
-   >>> book = Book(price=120, title='Python for masses', publisher='SPAM')
+   >>> book = Value(title='Learning Python',
+   ...              authors=['Mark Lutz', 'David Ascher'],
+   ...              publisher="O'REILLY")
    >>> book
-   Book(price=120, title='Python for masses', publisher='SPAM')
+   Value(authors=['Mark Lutz', 'David Ascher'], publisher="O'REILLY", title='Learning Python')
 
-   >>> book.title
-   'Python for masses'
 
-   >>> book['price']
-   120
+.. warning:: Any attempt of value modification or delete will raise ``ImmutableInstanceError``
 
-   >>> book.price = 230
+.. code-block:: python
+
+   >>> from vo import Value
+   >>> book = Value(title='Learning Python',
+   ...              authors=['Mark Lutz', 'David Ascher'],
+   ...              publisher="O'REILLY")
+   >>> book.title = 'Spam'
    Traceback (most recent call last):
      File "<input>", line 1, in <module>
-       raise ImmutableInstanceError
-   vo.value.ImmutableInstanceError: Modification of Value instance is forbidden.
+       raise ImmutableInstanceError()
+     vo.value.ImmutableInstanceError: Modification of Value frozen instance is forbidden.
+
+
+Values access
+-------------
+
+Values can be accessed like object attributes or like dict keys.
+
+.. code-block:: python
+
+   >>> from vo import Value
+   >>> book = Value(title='Learning Python',
+   ...              authors=['Mark Lutz', 'David Ascher'],
+   ...              publisher="O'REILLY")
+   >>> book.title == book['title']
+   True
+
+   >>> book.authors == book['authors']
+   True
+
+
+Objects comparison
+------------------
+
+Let's take the same book example.
+
+.. code-block:: python
+
+   >>> from vo import Value
+   >>> book1 = Value(title='Learning Python',
+   ...               authors=['Mark Lutz', 'David Ascher'],
+   ...               publisher="O'REILLY")
+   >>> book2 = Value(title='Learning Python',
+   ...               authors=['Mark Lutz', 'David Ascher'],
+   ...               publisher="O'REILLY")
+   >>> book1 == book2
+   True
+
+   >>> book1 is book2
+   False
+
+
+Value lookup
+------------
+
+Check if value exists.
+
+.. code-block:: python
+
+   >>> from vo import Value
+   >>> book = Value(title='Learning Python',
+   ...              authors=['Mark Lutz', 'David Ascher'],
+   ...              publisher="O'REILLY")
+   >>> 'title' in book
+   True
+
+   >>> 'price' in book
+   False
+
+   >>> book.title
+   'Learning Python'
+
+   >>> book.price
+   Traceback (most recent call last):
+     File "<input>", line 1, in <module>
+   AttributeError: 'Value' object has no attribute 'price'

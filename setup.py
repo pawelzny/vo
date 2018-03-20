@@ -61,7 +61,7 @@ setup(
     author='Paweł Zadrożny @pawelzny',
     author_email='pawel.zny@gmail.com',
     url='https://github.com/pawelzny/vo',
-    packages=find_packages(exclude=('tests', 'docs', 'bin')),
+    packages=find_packages(exclude=('tests', 'docs', 'bin', 'example')),
     package_dir={'vo': 'vo'},
     include_package_data=True,
     use_scm_version=True,
