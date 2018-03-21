@@ -76,6 +76,103 @@ Compare similar values
    :start-after: compare_similar_value_objects
    :end-before: return
 
+********
+Advanced
+********
+
+More real life example of Value Object usage.
+
+Basic inheritance
+=================
+
+Using Value Object directly is easy, fast, and just works.
+However due to dynamic attribute assignment on ``__init__`` your favourite
+IDE / Editor can't generate hints.
+
+This is when inheritance come handy.
+
+.. literalinclude:: ../example/advanced.py
+   :language: python
+   :dedent: 4
+   :start-after: vo_inheritance
+   :end-before: return
+
+
+Wonky behaviour
+===============
+
+Weird behaviour but completely correct.
+
+.. warning:: Value Object does not validate given attributes.
+             Validation is up to you.
+
+.. literalinclude:: ../example/advanced.py
+   :language: python
+   :dedent: 4
+   :start-after: vo_inheritance_wonky
+   :end-before: return
+
+
+Attribute validation
+====================
+
+Most of the time you will want to make inheritance like below,
+but remember to not assign attribute by your own. Always delegate to
+``super().__init__()``
+
+.. literalinclude:: ../example/advanced.py
+   :language: python
+   :dedent: 4
+   :emphasize-lines: 12-13
+   :start-after: proper_inheritance
+   :end-before: return
+
+
+Usage Ideas
+===========
+
+Value Object is helpful always when source data must not be modified.
+
+Frozen response
+---------------
+
+.. note:: **Requests** package has been faked for purpose of this example to avoid
+          unnecessary and unrelated dependency.
+
+          Before executing this example make sure you have **requests**
+          installed in your environment with ``pip install requests``
+
+.. literalinclude:: ../example/advanced.py
+   :language: python
+   :dedent: 4
+   :start-after: idea_frozen_response
+   :end-before: return
+
+
+2D Coordinates
+--------------
+
+.. literalinclude:: ../example/advanced.py
+   :language: python
+   :dedent: 4
+   :start-after: idea_coordinates
+   :end-before: # end of coordinates
+
+
+Money object
+------------
+
+.. danger:: | **This example is not meant to run on production !!**
+            | It doesn't implement validation and many more comparison methods.
+            |
+            | But its nice to present general idea of Money Object.
+
+.. literalinclude:: ../example/advanced.py
+   :language: python
+   :dedent: 4
+   :start-after: idea_money
+   :end-before: # end of money
+
 
 *****************
 Forbidden actions
@@ -83,6 +180,7 @@ Forbidden actions
 
 .. warning:: All attempt to value modification
              ends up with ``ImmutableInstanceError`` exception.
+
 
 Modification
 ============

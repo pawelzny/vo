@@ -38,35 +38,31 @@ class Value:
     :param: Any ``key=value`` pairs.
     """
 
-    __checksum = None
-    __checksum_tpl = '_{}__checksum'
+    _checksum = None
 
     def __init__(self, **kwargs):
         ck_sum = str_to_bytes('checksum:')
         for attr, value in sorted(kwargs.items()):
             object.__setattr__(self, attr, value)
             ck_sum += str_to_bytes(str(attr) + str(value))
-
-        cks_tpl = self.__checksum_tpl.format(self.__class__.__name__)
-        object.__setattr__(self, cks_tpl, hashlib.sha224(ck_sum).hexdigest())
+        object.__setattr__(self, '_checksum', hashlib.sha224(ck_sum).hexdigest())
 
     def __repr__(self):
-        cks_tpl = self.__checksum_tpl.format(self.__class__.__name__)
         values = ", ".join('{}={}'.format(key, repr(val))
-                           for key, val in self.to_dict().items() if key != cks_tpl)
+                           for key, val in self.to_dict().items() if key != '_checksum')
         return '{cls}({val})'.format(cls=self.__class__.__name__, val=values)
 
     def __str__(self):
-        return '{} Value'.format(self.__class__.__name__)
+        return self.to_json()
 
     def __eq__(self, other: "Value") -> bool:
-        return self.__checksum == other.__checksum
+        return hash(self) == hash(other)
 
     def __ne__(self, other: "Value") -> bool:
-        return self.__checksum != other.__checksum
+        return not self.__eq__(other)
 
     def __hash__(self) -> hash:
-        return hash(self.__checksum)
+        return hash(self._checksum)
 
     def __contains__(self, item: Hashable):
         return item in self.__dict__
@@ -96,7 +92,7 @@ class Value:
         :rtype: collections.OrderedDict
         """
         dct = OrderedDict(sorted(deepcopy(self.__dict__).items()))
-        del dct[self.__checksum_tpl.format(self.__class__.__name__)]
+        del dct['_checksum']
         return dct
 
     def to_json(self) -> str:

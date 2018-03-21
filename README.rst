@@ -40,10 +40,10 @@ Value Object
 Features
 ========
 
-* Value object can't be changed once created
+* Value Objects are immutable.
 * Two objects with the same values are considered equal
-* Access to values after dot: value.my_value
-* Access to values like dict: value['my_value']
+* Access to values with dot notation: ``value.my_attr``
+* Access to values by key: ``value['my_attr']``
 
 
 Installation
@@ -51,7 +51,7 @@ Installation
 
 .. code:: bash
 
-    pip install vo
+    pipenv install vo  # or pip install vo
 
 
 **Package**: https://pypi.org/project/vo/
@@ -60,13 +60,15 @@ Installation
 Documentation
 =============
 
-Read full documentation on: http://vo.readthedocs.io
+* Full documentation: http://vo.readthedocs.io
+* Public API: http://vo.readthedocs.io/en/stable/api.html
+* Examples and usage ideas: http://vo.readthedocs.io/en/stable/examples.html
 
 
 Quick Example
 =============
 
-Value accept any key=value pairs. These pairs will be attached to object as attributes.
+Value accept any ``key=value`` pairs. These pairs will be attached to object as attributes.
 Once created values are immutable. Can't be changed or deleted.
 
 .. code-block:: python
@@ -77,6 +79,9 @@ Once created values are immutable. Can't be changed or deleted.
    ...              publisher="O'REILLY")
    >>> book
    Value(authors=['Mark Lutz', 'David Ascher'], publisher="O'REILLY", title='Learning Python')
+
+   >>> str(book)
+   '{"authors": ["Mark Lutz", "David Ascher"], "publisher": "O\'REILLY", "title": "Learning Python"}'
 
 
 .. warning:: Any attempt of value modification or delete will raise ``ImmutableInstanceError``
