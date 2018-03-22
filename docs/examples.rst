@@ -224,8 +224,8 @@ Data dumps
 
 Convert value object to different data types.
 
-To dictionary
-=============
+To dict
+=======
 
 .. note:: Actually ``.to_dict()`` method returns ``collections.OrderedDict``.
 

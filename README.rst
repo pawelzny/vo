@@ -61,8 +61,8 @@ Documentation
 =============
 
 * Full documentation: http://vo.readthedocs.io
-* Public API: http://vo.readthedocs.io/en/stable/api.html
-* Examples and usage ideas: http://vo.readthedocs.io/en/stable/examples.html
+* Public API: http://vo.readthedocs.io/en/latest/api.html
+* Examples and usage ideas: http://vo.readthedocs.io/en/latest/examples.html
 
 
 Quick Example
