@@ -56,7 +56,11 @@ class Value:
         return self.to_json()
 
     def __eq__(self, other: "Value") -> bool:
-        return hash(self) == hash(other)
+        try:
+            return hash(self) == hash(other)
+        except TypeError:
+            # catch unhashable type
+            return False
 
     def __ne__(self, other: "Value") -> bool:
         return not self.__eq__(other)
