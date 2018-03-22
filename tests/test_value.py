@@ -6,7 +6,7 @@ from collections import OrderedDict
 from itertools import zip_longest
 
 from vo import ImmutableInstanceError, Value
-from vo.value import str_to_bytes
+from vo.value import _str_to_bytes
 
 __author__ = 'Paweł Zadrożny'
 __copyright__ = 'Copyright (c) 2017, Pawelzny'
@@ -253,4 +253,4 @@ class MiscTest(unittest.TestCase):
         )
 
         for case in cases:
-            self.assertEqual(str_to_bytes(case[0]), case[1])
+            self.assertEqual(_str_to_bytes(case[0]), case[1])

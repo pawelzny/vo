@@ -22,7 +22,7 @@ class ImmutableInstanceError(Exception):
         super().__init__(message or self.message)
 
 
-def str_to_bytes(string: str) -> bytes:
+def _str_to_bytes(string: str) -> bytes:
     return bytes(repr(string), 'utf-8')
 
 
@@ -41,10 +41,10 @@ class Value:
     _checksum = None
 
     def __init__(self, **kwargs):
-        ck_sum = str_to_bytes('checksum:')
+        ck_sum = _str_to_bytes('checksum:')
         for attr, value in sorted(kwargs.items()):
             object.__setattr__(self, attr, value)
-            ck_sum += str_to_bytes(str(attr) + str(value))
+            ck_sum += _str_to_bytes(str(attr) + str(value))
         object.__setattr__(self, '_checksum', hashlib.sha224(ck_sum).hexdigest())
 
     def __repr__(self):
@@ -117,4 +117,4 @@ class Value:
         :return: byte string
         :rtype: bytes
         """
-        return str_to_bytes(self.to_json())
+        return _str_to_bytes(self.to_json())
