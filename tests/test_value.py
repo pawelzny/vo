@@ -22,14 +22,12 @@ class ValueTest(unittest.TestCase):
         v2 = Value(other_attr=1243, text='first text')
 
         self.assertEqual(v1, v2)
-        self.assertEqual(hash(v1), hash(v2))
 
     def test_not_equal(self):
         v1 = Value(text='first text', other_attr=1243, new_attr=True)
         v2 = Value(other_attr=1243, text='first text', new_attr=False)
 
         self.assertNotEqual(v1, v2)
-        self.assertNotEqual(hash(v1), hash(v2))
 
     def test_to_dict(self):
         v = Value(text='first text', other_attr=1243)
