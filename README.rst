@@ -69,7 +69,7 @@ Quick Example
 =============
 
 Value accept any ``key=value`` pairs. These pairs will be attached to object as attributes.
-Once created values are immutable. Can't be changed or deleted.
+Once created values are immutable. Attributes can't be changed or deleted.
 
 .. code-block:: python
 

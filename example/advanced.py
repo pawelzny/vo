@@ -16,7 +16,7 @@ def vo_inheritance():
         currency = None
 
     book = Book(title='DDD', author='Pythonista', price=120.44, currency='USD')
-    return
+    return book
 
 
 def vo_inheritance_wonky():
@@ -57,7 +57,7 @@ def proper_inheritance():
             super().__init__(title=title, author=author, price=price, currency=currency)
 
     book = Book(title='DDD', author='Pythonista', price=120.44, currency='USD')
-    return
+    return book
 
 
 # noinspection PyUnusedLocal,PyMethodMayBeStatic
@@ -113,7 +113,7 @@ def idea_frozen_response():
                             '&filter[posts_per_page]=2')
 
     quotes = [Quote(**item) for item in response.json()]
-    return
+    return quotes
 
 
 def idea_coordinates():
@@ -124,11 +124,7 @@ def idea_coordinates():
         y = 0
 
         def __init__(self, x, y):
-            if not isinstance(x, (int, float)):
-                raise TypeError('x must be a number')
-            if not isinstance(y, (int, float)):
-                raise TypeError('y must be a number')
-
+            # validation if needed
             super().__init__(x=x, y=y)
 
         def __add__(self, other):
@@ -154,9 +150,11 @@ def idea_money():
 
     class Money(Value):
         amount = None
+        currency = None
 
-        def __init__(self, amount=0.00):
-            super().__init__(amount=decimal.Decimal(amount))
+        def __init__(self, amount, currency):
+            # plenty of validation
+            super().__init__(amount=decimal.Decimal(amount), currency=currency)
 
         def __lt__(self, other):
             return self.amount < other.amount
@@ -164,17 +162,14 @@ def idea_money():
         def __gt__(self, other):
             return self.amount > other.amount
 
-        def __eq__(self, other):
-            return self.amount == other.amount
-
         def __add__(self, other):
-            return Money(amount=self.amount + other.amount)
+            return Money(amount=self.amount + other.amount, currency='USD')
 
         def __sub__(self, other):
-            return Money(amount=self.amount - other.amount)
+            return Money(amount=self.amount - other.amount, currency='USD')
 
-    assert Money(200) > Money(120)
-    assert Money(100) < Money(120)
-    assert Money(100) + Money(200) == Money(300)
-    assert Money(100) - Money(50) == Money(50)
+    assert Money(200, 'USD') > Money(120, 'USD')
+    assert Money(100, 'USD') < Money(120, 'USD')
+    assert Money(100, 'USD') + Money(200, 'USD') == Money(300, 'USD')
+    assert Money(100, 'USD') - Money(50, 'USD') == Money(50, 'USD')
     # end of money

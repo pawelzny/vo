@@ -11,7 +11,7 @@ def create_plain_value_object():
 
     book_ddd = Value(title='DDD', author='Pythonista', price=120.44, currency='USD')
     book_tdd = Value(title='TDD', author='Life', price=99.98, currency='USD')
-    return
+    return book_ddd, book_tdd
 
 
 # noinspection PyUnresolvedReferences
