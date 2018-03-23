@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from vo.value import Value, ImmutableInstanceError
+from vo.value import ImmutableInstanceError, Value
 
 __author__ = 'Paweł Zadrożny'
 __copyright__ = 'Copyright (c) 2017, Pawelzny'
 __version__ = '0.3.1'
-__all__ = ['Value', 'ImmutableInstanceError']
+__all__ = ['ImmutableInstanceError', 'Value']

@@ -99,20 +99,20 @@ def idea_frozen_response():
     from vo import Value
 
     class Quote(Value):
-        ID = None
+        _id = None
         title = None
         content = None
         link = None
 
-        def __init__(self, ID, title, content, link, **kwargs):
+        def __init__(self, _id, title, content, link):
             # validation if needed
-            super().__init__(ID=ID, title=title, contet=content, link=link)
+            super().__init__(_id=_id, title=title, contet=content, link=link)
 
     response = requests.get('https://quotesondesign.com/wp-json/posts'
                             '?filter[orderby]=rand'
                             '&filter[posts_per_page]=2')
 
-    quotes = [Quote(**item) for item in response.json()]
+    quotes = [Quote(x['ID'], x['title'], x['content'], x['link']) for x in response.json()]
     return quotes
 
 

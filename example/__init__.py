@@ -19,7 +19,7 @@ def fetch_all_examples_for_testing():
     :rtype: list
     """
     example_func = []
-    for f in glob.glob(os.path.dirname(__file__)+"/*.py"):
+    for f in glob.glob(os.path.dirname(__file__) + "/*.py"):
         if os.path.isfile(f) and not os.path.basename(f).startswith('_'):
             mod = importlib.import_module('example.{}'.format(os.path.basename(f)[:-3]))
             example_func.extend([o[1] for o in getmembers(mod) if isfunction(o[1])])
