@@ -61,7 +61,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install pipenv
+            pip install pipenv==11.7.4
             pipenv install --python `which pypy3`
             pipenv install --python `which pypy3` --dev
       - save_cache:
