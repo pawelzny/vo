@@ -15,7 +15,6 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install --user --upgrade pip
             pip install pipenv
             pipenv install --three
             pipenv install --three --dev
@@ -39,7 +38,6 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install --user --upgrade pip
             pip install pipenv
             pipenv install --three
             pipenv install --three --dev
@@ -63,7 +61,6 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install --user --upgrade pip
             pip install pipenv
             pipenv install --python `which pypy3`
             pipenv install --python `which pypy3` --dev
@@ -87,7 +84,6 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install --user --upgrade pip
             pip install pipenv
             pipenv install --three
             pipenv install --three --dev
