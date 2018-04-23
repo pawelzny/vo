@@ -95,9 +95,20 @@ class Value:
         :return: dict with values
         :rtype: collections.OrderedDict
         """
-        dct = OrderedDict(sorted(deepcopy(self.__dict__).items()))
-        del dct['_checksum']
-        return dct
+        def dd(item):
+            dct = deepcopy(item)
+
+            try:
+                del dct['_checksum']
+            except KeyError:
+                pass
+
+            for key, val in dct.items():
+                if isinstance(val, Value):
+                    dct[key] = dd(val.to_dict())
+            return dct
+
+        return OrderedDict(sorted(dd(self.__dict__).items()))
 
     def to_json(self) -> str:
         """Dump values to JSON.

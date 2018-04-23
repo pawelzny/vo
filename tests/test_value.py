@@ -107,6 +107,13 @@ class DataDumpTest(unittest.TestCase):
             (Value(title='value', aaa='A!'), OrderedDict([('aaa', 'A!'), ('title', 'value')])),
             (Value(number=123, empty=None), {'empty': None, 'number': 123}),
             (Value(number=123, empty=None), OrderedDict([('empty', None), ('number', 123)])),
+            (Value(number=Value(val=130)), OrderedDict([('number', OrderedDict([('val', 130)]))])),
+            (Value(number=Value(val=Value(v=150))),
+             OrderedDict([
+                 ('number', OrderedDict([
+                     ('val', OrderedDict([('v', 150)]))
+                 ]))
+             ])),
         )
 
         falsy_cases = (
@@ -127,6 +134,12 @@ class DataDumpTest(unittest.TestCase):
             (Value(title='some value'), {'title': 'some value'}),
             (Value(title='value', aaa='A!'), OrderedDict([('aaa', 'A!'), ('title', 'value')])),
             (Value(number=123, empty=None), OrderedDict([('empty', None), ('number', 123)])),
+            (Value(number=Value(val=Value(v=150))),
+             OrderedDict([
+                 ('number', OrderedDict([
+                     ('val', OrderedDict([('v', 150)]))
+                 ]))
+             ])),
         )
 
         falsy_cases = (
@@ -146,6 +159,9 @@ class DataDumpTest(unittest.TestCase):
             (Value(title='some value'), b'\'{"title": "some value"}\''),
             (Value(title='some value', aaa='A!'), b'\'{"aaa": "A!", "title": "some value"}\''),
             (Value(test=True, empty=None), b'\'{"empty": null, "test": true}\''),
+            (Value(number=Value(val=130)), b'\'{"number": {"val": 130}}\''),
+            (Value(number=Value(val=Value(v=150))),
+             b'\'{"number": {"val": {"v": 150}}}\''),
         )
 
         falsy_cases = (
