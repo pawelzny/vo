@@ -95,8 +95,9 @@ class Value:
         :return: dict with values
         :rtype: collections.OrderedDict
         """
-        def dd(item):
-            dct = deepcopy(item)
+
+        def dd(dct: dict) -> dict:
+            dct = deepcopy(dct)
 
             try:
                 del dct['_checksum']
@@ -104,6 +105,7 @@ class Value:
                 pass
 
             for key, val in dct.items():
+                # If any of value is instance of Value dump it recursively
                 if isinstance(val, Value):
                     dct[key] = dd(val.to_dict())
             return dct
