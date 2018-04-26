@@ -114,6 +114,18 @@ class DataDumpTest(unittest.TestCase):
                      ('val', OrderedDict([('v', 150)]))
                  ]))
              ])),
+            (Value(c=2, a=1, b=Value(e=3, d=Value(f=4, g=5))),
+             OrderedDict([
+                 ('a', 1),
+                 ('b', OrderedDict([
+                     ('d', OrderedDict([
+                         ('f', 4),
+                         ('g', 5),
+                     ])),
+                     ('e', 3),
+                 ])),
+                 ('c', 2),
+             ])),
         )
 
         falsy_cases = (
@@ -121,6 +133,18 @@ class DataDumpTest(unittest.TestCase):
             (Value(number=123, empty=None), OrderedDict([('number', 123), ('empty', None)])),
             (Value(number=123, empty=None), {'empty': True, 'number': 123}),
             (Value(title='some value'), {'title': 'any value'}),
+            (Value(c=2, a=1, b=Value(e=3, d=Value(f=4, g=5))),
+             OrderedDict([
+                 ('a', 1),
+                 ('c', 2),
+                 ('b', OrderedDict([
+                     ('d', OrderedDict([
+                         ('g', 5),
+                         ('f', 4),
+                     ])),
+                     ('e', 3),
+                 ])),
+             ])),
         )
 
         for truthy, falsy in zip_longest(truthy_cases, falsy_cases):
@@ -137,8 +161,8 @@ class DataDumpTest(unittest.TestCase):
             (Value(number=Value(val=Value(v=150))),
              OrderedDict([
                  ('number', OrderedDict([
-                     ('val', OrderedDict([('v', 150)]))
-                 ]))
+                     ('val', OrderedDict([('v', 150)])),
+                 ])),
              ])),
         )
 
@@ -162,6 +186,8 @@ class DataDumpTest(unittest.TestCase):
             (Value(number=Value(val=130)), b'\'{"number": {"val": 130}}\''),
             (Value(number=Value(val=Value(v=150))),
              b'\'{"number": {"val": {"v": 150}}}\''),
+            (Value(c=2, a=1, b=Value(e=3, d=Value(f=4, g=5))),
+             b'\'{"a": 1, "b": {"d": {"f": 4, "g": 5}, "e": 3}, "c": 2}\'')
         )
 
         falsy_cases = (

@@ -4,6 +4,7 @@ import hashlib
 import json
 from collections import Hashable, OrderedDict
 from copy import deepcopy
+from typing import Any
 
 __author__ = 'Paweł Zadrożny'
 __copyright__ = 'Copyright (c) 2017, Pawelzny'
@@ -52,7 +53,7 @@ class Value:
                            for key, val in self.to_dict().items() if key != '_checksum')
         return '{cls}({val})'.format(cls=self.__class__.__name__, val=values)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.to_json()
 
     def __eq__(self, other: "Value") -> bool:
@@ -68,10 +69,10 @@ class Value:
     def __hash__(self) -> hash:
         return hash(self._checksum)
 
-    def __contains__(self, item: Hashable):
+    def __contains__(self, item: Hashable) -> bool:
         return item in self.__dict__
 
-    def __getitem__(self, item):
+    def __getitem__(self, item) -> Any:
         return self.__dict__[item]
 
     def __setattr__(self, name, value):
